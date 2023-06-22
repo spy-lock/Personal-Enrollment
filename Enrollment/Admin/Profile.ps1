@@ -1,123 +1,363 @@
 Function Set-WinImage {
-    Copy-Item -Path "C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Powershell-Enrollment\Enrollment\Drivers" -Destination C:\Iso\Files\ -Force -Verbose -Recurse
-    Copy-Item -Path "C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Powershell-Enrollment\Enrollment\Econvert" -Destination C:\Iso\Files\ -Force -Verbose -Recurse
-    Copy-Item -Path "C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Powershell-Enrollment\Enrollment\Modules" -Destination C:\Iso\Files\ -Force -Verbose -Recurse
-    Copy-Item -Path "C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Powershell-Enrollment\Enrollment\Scripts" -Destination C:\Iso\Files\ -Force -Verbose -Recurse
-    Copy-Item -Path "C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Powershell-Enrollment\Enrollment\WinForm" -Destination C:\Iso\Files\ -Force -Verbose -Recurse
 
-    dism /online /cleanup-wim
-
-    Remove-Item C:\WIN10_en, C:\WIN10_nl, C:\WIN11_en, C:\WIN11_nl -Force -Recurse -erroraction SilentlyContinue
+    Remove-Item $env:ProgramFiles\enrollment\mount\WIN10_en, $env:ProgramFiles\enrollment\mount\WIN10_nl, $env:ProgramFiles\enrollment\mount\WIN11_en, $env:ProgramFiles\enrollment\mount\WIN11_nl -Force -Recurse -erroraction SilentlyContinue
 
     #CREATES DIRECTORIES FOR WHERE THE MOUNTED IMAGES WILL BE MOUNTED
     Write-Output "`n Creating directories..."
     WRITE-Output ""
-    mkdir C:\WIN10_en -ErrorAction SilentlyContinue | Out-Null
-    mkdir C:\WIN10_nl -ErrorAction SilentlyContinue | Out-Null
-    mkdir C:\WIN11_en -ErrorAction SilentlyContinue | Out-Null
-    mkdir C:\WIN11_nl -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory $env:ProgramFiles\enrollment\mount\win10_en -Force -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory $env:ProgramFiles\enrollment\mount\Win10_nl -Force -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory $env:ProgramFiles\enrollment\mount\Win11_en -Force -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory $env:ProgramFiles\enrollment\mount\Win11_nl -Force -ErrorAction SilentlyContinue | Out-Null
     Write-Output ""
 
     #MOUNTS THE IMAGES TO THE CREATED DIRECTORIES
     write-Output "`n Mounting images..."
     WRITE-output ""
-    $mount1 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN10_en-gb\sources\install.wim" /index:1 /mountdir:C:/Win10_en} -passthru
-    $mount2 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN10_nl-nl\sources\install.wim" /index:1 /mountdir:C:/Win10_nl} -passthru
-    $mount3 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN11_en-gb\sources\install.wim" /index:1 /mountdir:C:/Win11_en} -passthru
-    $mount4 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN11_nl-nl\sources\install.wim" /index:1 /mountdir:C:/Win11_nl} -passthru
+    $mount1 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\programfiles\enrollment\iso\images\WIN10_en-gb\sources\install.wim" /index:1 /mountdir:C:\programfiles\enrollment\mount\win10_en} -passthru
+    $mount2 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\programfiles\enrollment\iso\images\WIN10_nl-nl\sources\install.wim" /index:1 /mountdir:C:\programfiles\enrollment\mount\win10_nl} -passthru
+    $mount3 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\programfiles\enrollment\iso\images\WIN11_en-gb\sources\install.wim" /index:1 /mountdir:C:\programfiles\enrollment\mount\win11_en} -passthru
+    $mount4 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\programfiles\enrollment\iso\images\WIN11_nl-nl\sources\install.wim" /index:1 /mountdir:C:\programfiles\enrollment\mount\win11_nl} -passthru
 
     Wait-Process $mount1.Id, $mount2.id, $mount3.id, $mount4.id
 
     write-Output "`n Removing files in images..."
     WRITE-Output ""
 
-    Remove-Item C:\WIN10_en\files -Force -Recurse
-    Remove-item C:\WIN10_nl\files -Force -Recurse
-    Remove-Item C:\WIN11_en\files -Force -Recurse
-    Remove-Item C:\WIN11_nl\files -Force -Recurse
+    Remove-Item C:\programfiles\enrollment\mount\win10_en\files -Force -Recurse
+    Remove-item C:\programfiles\enrollment\mount\win10_nl\files -Force -Recurse
+    Remove-Item C:\programfiles\enrollment\mount\win11_en\files -Force -Recurse
+    Remove-Item C:\programfiles\enrollment\mount\win11_nl\files -Force -Recurse
 
     #COPYING FILES INSIDE THE MOUNTED IMAGES
     write-host "`n Copying items now..."
-    copy-files -Source C:\iso\Files -Destination C:\WIN10_en\files -Activity "Copying 'WIN10_en\files'..."  -Verbose
-    copy-files -Source C:\iso\files -Destination C:\Win10_nl\files -Activity "Copying 'WIN10_nl\files'..." -Verbose
-    copy-files -Source C:\iso\files -Destination C:\Win11_en\files -Activity "Copying 'WIN11_en\files'..."  -Verbose
-    copy-files -Source C:\iso\files -Destination C:\Win11_nl\files -Activity "Copying 'WIN11_nl\files'..."  -Verbose
+    copy-files -Source $env:ProgramFiles\enrollment\files -Destination C:\programfiles\enrollment\mount\win10_en\files -Activity "Copying 'WIN10_en\files'..."  -Verbose
+    copy-files -Source $env:ProgramFiles\enrollment\files -Destination C:\programfiles\enrollment\mount\win10_nl\files -Activity "Copying 'WIN10_nl\files'..." -Verbose
+    copy-files -Source $env:ProgramFiles\enrollment\files -Destination C:\programfiles\enrollment\mount\win11_en\files -Activity "Copying 'WIN11_en\files'..."  -Verbose
+    copy-files -Source $env:ProgramFiles\enrollment\files -Destination C:\programfiles\enrollment\mount\win11_nl\files -Activity "Copying 'WIN11_nl\files'..."  -Verbose
     WRITE-Output ""
 
 
     #UNMOUNTING IMAGES AND SAVING CHANGES
     write-Output "`n Unmounting images..."
     WRITE-Output ""
-    $unmount1 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win10_en /commit} -PassThru
-    $unmount2 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win10_nl /commit} -PassThru
-    $unmount3 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win11_en /commit} -PassThru
-    $unmount4 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win11_nl /commit} -PassThru
+    $unmount1 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:\programfiles\enrollment\mount\win10_en /commit} -PassThru
+    $unmount2 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:\programfiles\enrollment\mount\win10_nl /commit} -PassThru
+    $unmount3 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:\programfiles\enrollment\mount\win11_en /commit} -PassThru
+    $unmount4 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:\programfiles\enrollment\mount\win11_nl /commit} -PassThru
 
     Wait-Process $unmount1.Id, $unmount2.id, $unmount3.id, $unmount4.id
 
-    Remove-Item C:\WIN10_en, C:\WIN10_nl, C:\WIN11_en, C:\WIN11_nl -Force -Recurse -erroraction SilentlyContinue
+    Remove-Item $env:ProgramFiles\enrollment\mount\WIN10_en, $env:ProgramFiles\enrollment\mount\WIN10_nl, $env:ProgramFiles\enrollment\mount\WIN11_en, $env:ProgramFiles\enrollment\mount\WIN11_nl -Force -Recurse -erroraction SilentlyContinue
 }
 
 Function New-WinImageDrive {
-    Write-Output ""
-    Write-Output "`n searching for script..."
-    Write-Output ""
-
-    Get-ChildItem -Path C:\Users -Force -Recurse | Where-Object -Property Name -like create-drive-form.ps1 | Select-Object -Property FullName -OutVariable createlocation | out-null
-    $count = 0
-    foreach ($location in $createlocation)
-    {
-        $count++
-
-        $name = "option" + "$count"
-
-        New-Variable -Name $name -Value $location -Force -ErrorAction SilentlyContinue
-    } 
-
-    Get-Variable -Exclude options | Where-Object -Property Name -like option* -OutVariable numberoption | Out-Null
-    $coun = 0
-    foreach ($opt in $numberoption)
-    {
-        $coun++
-        $name = $opt.Value.fullname
-        Write-Output "$coun - $name"
+     # Self-elevate the script if required
+    if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+     if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+      $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+      Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine -WindowStyle Maximized
+      Exit
+     }
     }
-    Write-Output ""
-    $chosennumber = Read-Host -Prompt "please select the right script to run"
 
-    Get-Variable | Where-Object -Property Name -like option$chosennumber -OutVariable chosenscript
-    $chosenscript.Value
+############### ASSEMBLIES ###############
+[void] [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")
 
-    $fullchosenscript = $chosenscript.Value.FullName.Replace("\create-drive-form.ps1", "")
-    Set-Location $fullchosenscript
-    .\create-drive-form.ps1
-}
 
-Function Set-NasImage {
-    Write-Output "`n Starting NAS replacement process..."
-    Start-Sleep -Seconds 2
-    DO {
-        $NAS = Test-Path L:/enrollment -ErrorAction SilentlyContinue
-        IF($NAS -like "false") {
-            Write-Output "`n Network share not found, mapping now..."
-            Start-Sleep -Seconds 2
+###############\\-FUNCTION-//###############
 
-            net use L: \\192.168.227.250\Enrollment /user:Enrollment 3Ul9T0Ay!
+Function get-drives
+{
+    $listview_CreateDrive1.Items.Clear()
+    $listview_CreateDrive1.Columns.Clear()
+
+    $drives = get-disk | Select-Object -Property disknumber, FriendlyName, BusType  
+
+    $driveProperties = $drives[0].psobject.properties
+
+    $driveProperties | ForEach-Object {
+        $listview_CreateDrive1.Columns.Add("$($_.Name)") | Out-Null
+    }
+
+    foreach ($drive in $drives){
+
+        $DriveListviewItem = New-Object System.Windows.Forms.ListViewItem($drive.disknumber)
+
+        $drive.psobject.properties | Where-Object {$_.Name -ne "disknumber"} | ForEach-Object {
+            $ColumnName = $_.name
+            $DriveListviewItem.SubItems.Add("$($drive.$ColumnName)") | Out-Null
         }
+
+        $listview_CreateDrive1.Items.Add($DriveListviewItem) | Out-Null
+
     }
-    UNTIL($NAS -like "true")
 
-    Remove-Files -Path L:\ENROLLMENT\FILES\images -Activity "Removing images from 'NAS'..." 
+    $listview_CreateDrive1.AutoResizeColumns("HeaderSize")
 
-    copy-files -Source C:\iso\images -Destination L:\ENROLLMENT\FILES\images -Activity "Copying images to 'NAS'..."
-
-    Write-output "`n Remove temp folders..."
-    Write-Output ""
-    Remove-Item C:\WIN10_en, C:\WIN10_nl, C:\WIN11_en, C:\WIN11_nl -ErrorAction SilentlyContinue
-
-    Write-output "`n Operation completed succesfully."
-    Read-Host -Prompt "`n Press (ENTER) to exit"
 }
+
+Function select-drive
+{
+    $SelectedDrive = @($listview_CreateDrive1.SelectedIndices)
+
+    $DiskNumberColumnIndex = ($listview_CreateDrive1.Columns | Where-Object {$_.text -eq "DiskNumber"}).index
+
+    $SelectedDrive | ForEach-Object {
+
+        $DriveDiskNumber = ($listview_CreateDrive1.Items[$_].subitems[$DiskNumberColumnIndex]).text
+
+        New-Item $env:windir\temp\drivechoice.txt -Value $DriveDiskNumber -Confirm:$false -Force
+        }
+}
+
+Function copy-files
+{
+    Param
+    (
+        [Parameter(Mandatory)]
+        [string]$Source,
+
+        [Parameter(Mandatory)]
+        [string]$Destination,
+
+        [Parameter()]
+        [string]$Activity = "Default"
+    )
+
+        $ItemsToCopy = Get-ChildItem $Source -Recurse -Force
+        
+        $TotalItems = $ItemsToCopy.Count
+        $CurrentItem = 0
+        $PercentComplete = 0
+
+        ForEach ($Item in $ItemsToCopy)
+        {
+            Write-Progress -Activity $Activity -Status "$PercentComplete% Complete" -PercentComplete $PercentComplete
+
+            $Name = $Item.FullName
+            $TrimmedName = $Name.Replace($Source, "").trim("\")
+            $DestinationFull = $Destination + '\' + $TrimmedName
+
+            Copy-Item -Path $Name -Destination $DestinationFull -Force
+
+            $currentItem++
+            $percentcomplete = [int](($currentItem / $totalitems) * 100)
+        }
+}
+
+Function Remove-Files
+{
+    Param
+    (
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [Parameter()]
+        [string]$Activity = "Default"
+    )
+
+        $ItemsToDelete = Get-ChildItem $Path -Recurse -File -Force
+        $TotalItems = $ItemsToDelete.Count
+        $CurrentItem = 0
+        $PercentComplete = 0
+
+        ForEach ($Item in $ItemsToDelete)
+        {
+            Write-Progress -Activity $Activity -Status "$PercentComplete% Complete" -PercentComplete $PercentComplete
+
+            Remove-Item $item.FullName -Force -Confirm:$false
+
+            $currentItem++
+            $percentcomplete = [int](($currentItem / $totalitems) * 100)
+        }
+
+    Write-Progress -Activity "Cleaning up directories..." -Status Waiting -PercentComplete $PercentComplete
+    Start-Sleep -Seconds 2
+
+    Get-ChildItem $Path -Directory -Recurse | Remove-Item -Recurse -Force -Confirm:$false -Verbose
+}
+
+
+###############\\-FORM-//###############
+
+$Form_CreateDrive                             = [System.Windows.Forms.Form]::new()
+    $Form_CreateDrive.StartPosition           = "CenterScreen"
+    $Form_CreateDrive.Size                    = [System.Drawing.Size]::new(410,360)
+    $Form_CreateDrive.Text                    = "Disk creation"
+    $Form_CreateDrive.FormBorderStyle         = "FixedDialog"
+    $Form_CreateDrive.top                     = $true
+
+
+###############\\-LABELS-//###############
+
+$Label_CreateDrive1                            = [System.Windows.Forms.Label]::new()
+    $Label_CreateDrive1.Location               = [System.Drawing.Point]::new(8,8)
+    $Label_CreateDrive1.Size                   = [System.Drawing.Size]::new(240,32)
+    $Label_CreateDrive1.Text                   = "Please select a drive:"
+
+
+###############\\-LISTVIEW-//###############
+
+$listview_CreateDrive1                         = New-Object System.Windows.Forms.ListView
+    $listview_CreateDrive1.Location            = New-Object System.Drawing.Size(8,40)
+    $listview_CreateDrive1.Size                = New-Object System.Drawing.Size(380,250)
+    $listview_CreateDrive1.Anchor              = [System.Windows.Forms.AnchorStyles]::Bottom -bor
+                                                 [System.Windows.Forms.AnchorStyles]::Left -bor
+                                                 [System.Windows.Forms.AnchorStyles]::Right -bor
+                                                 [System.Windows.Forms.AnchorStyles]::Top
+    $listview_CreateDrive1.View                = "Details"
+    $listview_CreateDrive1.FullRowSelect       = $true
+    $listview_CreateDrive1.MultiSelect         = $true
+    $listview_CreateDrive1.AllowColumnReorder  = $true
+    $listview_CreateDrive1.GridLines           = $true
+
+
+###############\\-BUTTONS-//###############
+
+$button_CreateDrive1                       = New-Object System.Windows.Forms.Button
+    $button_CreateDrive1.Location          = New-Object System.Drawing.Point(6,291)
+    $button_CreateDrive1.Size              = New-Object System.Drawing.Size(100,28)
+    $button_CreateDrive1.Text              = "Refresh"
+    $button_CreateDrive1.Anchor            = [System.Windows.Forms.AnchorStyles]::Bottom -bor
+                                             [System.Windows.Forms.AnchorStyles]::Left
+    $button_CreateDrive1.TextAlign         = "MiddleCenter"
+
+$button_CreateDrive2                       = New-Object System.Windows.Forms.Button
+    $button_CreateDrive2.Location          = New-Object System.Drawing.Point(290,291)
+    $button_CreateDrive2.Size              = New-Object System.Drawing.Size(100,28)
+    $button_CreateDrive2.Text              = "Continue"
+    $button_CreateDrive2.Anchor            = [System.Windows.Forms.AnchorStyles]::Bottom -bor
+                                             [System.Windows.Forms.AnchorStyles]::Right
+    $button_CreateDrive2.TextAlign         = "MiddleCenter"
+
+
+###############\\-EVENTS-//###############
+
+$button_CreateDrive1.add_click({
+
+    get-drives
+
+})
+
+$button_CreateDrive2.add_click({
+
+    select-drive
+    $Form_CreateDrive.close()
+})
+
+###############\\-CONTROLS-//###############
+
+$Form_CreateDrive.controls.Add($Label_CreateDrive1)
+$Form_CreateDrive.Controls.Add($listview_CreateDrive1)
+$Form_CreateDrive.controls.Add($button_CreateDrive1)
+$Form_CreateDrive.controls.Add($button_CreateDrive2)
+
+###############\\-SHOW-//###############
+
+$Form_CreateDrive.add_shown({
+
+    get-drives
+
+})
+[void] $Form_CreateDrive.ShowDialog()
+
+Get-Content $env:windir\temp\drivechoice.txt -ErrorAction SilentlyContinue -Force -OutVariable disknumber | Out-Null
+
+Clear-Host
+Write-Output "`n Drive $DiskNumber will be used for installation."
+Write-Output ""
+Start-Sleep -Seconds 2
+
+DO
+{
+    $adk = Test-Path "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\"
+
+    IF($adk -like "false") {
+        winget install --id Microsoft.WindowsADK --force --accept-package-agreements --accept-source-agreements -h
+        winget install --id Microsoft.ADKPEAddon --force --accept-package-agreements --accept-source-agreements -h
+    }
+
+    ELSE
+    {
+        Write-Output "`n ADK has been found."
+        Write-Output ""
+        Start-Sleep -Seconds 2
+    }
+}
+UNTIL($adk -like "true")
+
+Write-Output "`n Initializing disks..."
+Write-Output ""
+Start-Sleep -Seconds 2
+
+$disknumber = Get-Content $env:windir\temp\drivechoice.txt
+
+Get-Disk | Where-Object -Property Number -eq $disknumber | Clear-Disk -RemoveData -Confirm:$false -Verbose
+
+Set-Disk -PartitionStyle GPT -Number $disknumber -ErrorAction SilentlyContinue -Verbose
+
+Initialize-Disk -Number $disknumber -erroraction silentlycontinue -Verbose
+
+New-Partition -DiskNumber $disknumber -Size 10gb -DriveLetter P -Verbose
+New-Partition -DiskNumber $disknumber -UseMaximumSize -DriveLetter E -Verbose
+
+Format-Volume -DriveLetter p -FileSystem FAT32 -NewFileSystemLabel "Windows PE" -Verbose | out-null
+Format-Volume -DriveLetter E -FileSystem NTFS -NewFileSystemLabel "Images" -Verbose | out-null
+
+Write-Output "`n Disk initialized."
+Write-Output ""
+Start-Sleep -Seconds 2
+
+write-output "`n Getting files to copy, this may take a while..."
+write-output ""
+start-sleep -seconds 2
+
+copy-files -Source $env:ProgramFiles\enrollment\PE -Destination P: -Activity "Copying files from 'PE'..."
+copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
+
+Write-Output "`n Items have been copied."
+Write-Output ""
+Start-Sleep -Seconds 2
+
+Write-Output "`n Adding boot files..."
+Write-Output ""
+Start-Sleep -Seconds 2
+
+Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
+
+$drives = "D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+FOREACH ($drive in $drives) {
+    #\\-If it finds the right drive with the right file./-//#
+    IF (Test-Path "$($drive):\checkofditdejuistedriveis.txt") {
+        #\\-Saves the right drive in a variable.-//#
+        $ImageDrive = $drive
+    }
+}
+
+$drives = "D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+FOREACH ($drive in $drives) {
+    #\\-If it finds the right drive with the right file./-//#
+    IF (Test-Path "$($drive):\checkdrive.ps1") {
+        #\\-Saves the right drive in a variable.-//#
+        $PEDrive = $drive
+    }
+}
+
+
+$imageDriveL = $imageDrive + ":"
+chkdsk $imageDriveL /f /x /r /c /i /b /scan /perf
+Optimize-Volume $imageDrive -Analyze -Defrag -Verbose
+
+$peDriveL = $peDrive + ":"
+chkdsk $peDriveL /f /x /r
+
+
+
+
+Write-Output "`n Script is done."
+Read-Host -Prompt "Press enter to exit (ENTER)"}
+
 
 Function Start-Deployment {
     DO {
@@ -203,6 +443,7 @@ Function Start-Deployment {
     Start-Sleep -Seconds 2
 
 }
+
 Function Set-DriveImage {
     #\\-Puts all possible drives in a variable.-//#
     $drives = "D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
@@ -237,7 +478,7 @@ Function Set-DriveImage {
     $FullDrivePath = "$IMAGESDRIVE" + ":\"
 
     Remove-Files -Path $FullDrivePath\images -Activity "Removing images from External drive..."
-    copy-files -Source C:\iso\images -Destination $FullDrivePath\images -activity "Replacing images..."
+    copy-files -Source $env:ProgramFiles\enrollment\iso\images -Destination $FullDrivePath\images -activity "Replacing images..."
 
     Read-Host "`n Press (ENTER) to exit"
 }
@@ -332,46 +573,6 @@ function Write-Log {
     Add-Content -Path $LogFilePath -Value $LogMessage
 }
 
-Function Add-Driver {
-    Remove-Item C:\WIN10_en, C:\WIN10_nl, C:\WIN11_en, C:\WIN11_nl -Force -Recurse -erroraction SilentlyContinue
-
-    #CREATES DIRECTORIES FOR WHERE THE MOUNTED IMAGES WILL BE MOUNTED
-    Write-Output "`n Creating directories..."
-    WRITE-Output ""
-    mkdir C:\WIN10_en -ErrorAction SilentlyContinue | Out-Null
-    mkdir C:\WIN10_nl -ErrorAction SilentlyContinue | Out-Null
-    mkdir C:\WIN11_en -ErrorAction SilentlyContinue | Out-Null
-    mkdir C:\WIN11_nl -ErrorAction SilentlyContinue | Out-Null
-    Write-Output ""
-
-    #MOUNTS THE IMAGES TO THE CREATED DIRECTORIES
-    write-Output "`n Mounting images..."
-    WRITE-output ""
-    $mount1 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN10_en-gb\sources\install.wim" /index:1 /mountdir:C:/Win10_en} -passthru
-    $mount2 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN10_nl-nl\sources\install.wim" /index:1 /mountdir:C:/Win10_nl} -passthru
-    $mount3 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN11_en-gb\sources\install.wim" /index:1 /mountdir:C:/Win11_en} -passthru
-    $mount4 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\iso\images\WIN11_nl-nl\sources\install.wim" /index:1 /mountdir:C:/Win11_nl} -passthru
-
-    Wait-Process $mount1.Id, $mount2.id, $mount3.id, $mount4.id
-
-    $Add1 = Start-Process powershell -ArgumentList {dism /Image:C:\Win10_en /Add-Driver /Driver:"C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Drivers" /Recurse} -passthru
-    $Add2 = Start-Process powershell -ArgumentList {dism /Image:C:\Win10_nl /Add-Driver /Driver:"C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Drivers" /Recurse} -passthru
-    $Add3 = Start-Process powershell -ArgumentList {dism /Image:C:\Win11_en /Add-Driver /Driver:"C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Drivers" /Recurse} -passthru
-    $Add4 = Start-Process powershell -ArgumentList {dism /Image:C:\Win11_nl /Add-Driver /Driver:"C:\Users\MichaelFeenstraAgili\OneDrive - Agiliq B.V\Documenten\Drivers" /Recurse} -passthru
-
-    Wait-Process $Add1.id, $Add2.id, $Add3.id, $Add4.Id
-
-    write-Output "`n Unmounting images..."
-    WRITE-Output ""
-    $unmount1 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win10_en /commit} -PassThru
-    $unmount2 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win10_nl /commit} -PassThru
-    $unmount3 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win11_en /commit} -PassThru
-    $unmount4 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:C:/Win11_nl /commit} -PassThru
-
-    Wait-Process $unmount1.Id, $unmount2.id, $unmount3.id, $unmount4.id
-
-    Remove-Item C:\WIN10_en, C:\WIN10_nl, C:\WIN11_en, C:\WIN11_nl -Force -Recurse -erroraction SilentlyContinue
-}
 
 Function Add-Profile {
     #  checks if the current user is an administrator and if not, it elevates the privileges by running the script again with the Runas verb
@@ -390,7 +591,7 @@ Function Add-Profile {
 
     Clear-Host
     Write-Output "Searching for Profiles..."
-    Get-ChildItem -Path C:\users -Force -Recurse -ErrorAction SilentlyContinue| Where-Object -Property Name -like profile.ps1 | Select-Object -Property FullName -OutVariable ProfileLocation -ErrorAction SilentlyContinue| out-null -ErrorAction SilentlyContinue
+    Get-ChildItem -Path $env:ProgramFiles\enrollment -Force -Recurse -ErrorAction SilentlyContinue| Where-Object -Property Name -like profile.ps1 | Select-Object -Property FullName -OutVariable ProfileLocation -ErrorAction SilentlyContinue| out-null -ErrorAction SilentlyContinue
 
     $number = 0
     Write-Output "`n Please select the script you want to copy"

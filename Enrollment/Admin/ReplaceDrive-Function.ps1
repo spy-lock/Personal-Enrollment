@@ -32,7 +32,7 @@ Function Set-DriveImage {
     $FullDrivePath = "$IMAGESDRIVE" + ":\"
 
     Remove-Files -Path $FullDrivePath\images -Activity "Removing images from External drive..."
-    copy-files -Source C:\iso\images -Destination $FullDrivePath\images -activity "Replacing images..."
+    copy-files -Source $env:ProgramFiles\enrollment\iso\images -Destination $FullDrivePath\images -activity "Replacing images..."
 
     Read-Host "`n Press (ENTER) to exit"
 }

@@ -15,7 +15,7 @@ Function Add-Profile {
 
     Clear-Host
     Write-Output "Searching for Profiles..."
-    Get-ChildItem -Path C:\users -Force -Recurse -ErrorAction SilentlyContinue| Where-Object -Property Name -like profile.ps1 | Select-Object -Property FullName -OutVariable ProfileLocation -ErrorAction SilentlyContinue| out-null -ErrorAction SilentlyContinue
+    Get-ChildItem -Path $env:ProgramFiles\enrollment -Force -Recurse -ErrorAction SilentlyContinue| Where-Object -Property Name -like profile.ps1 | Select-Object -Property FullName -OutVariable ProfileLocation -ErrorAction SilentlyContinue| out-null -ErrorAction SilentlyContinue
 
     $number = 0
     Write-Output "`n Please select the script you want to copy"

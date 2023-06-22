@@ -217,29 +217,6 @@ Start-Sleep -Seconds 2
 
 DO
 {
-    $share = test-path L:/enrollment
-
-    IF($share -like "false")
-    {
-        Write-Output "`n Network share not found."
-        Write-Output "`n Mapping now..."
-        Write-Output ""
-        Start-Sleep -Seconds 2
-
-        net use L: \\192.168.227.250\Enrollment /user:Enrollment 3Ul9T0Ay!
-    }
-
-    ELSE
-    {
-        Write-Output "`n Network share found."
-        Write-Output ""
-        Start-Sleep -Seconds 2
-    }
-}
-UNTIL($share -like "true")
-
-DO
-{
     $adk = Test-Path "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\"
 
     IF($adk -like "false") {
@@ -282,9 +259,8 @@ write-output "`n Getting files to copy, this may take a while..."
 write-output ""
 start-sleep -seconds 2
 
-copy-files -Source L:\ENROLLMENT\PE -Destination P: -Activity "Copying files from 'PE'..."
-copy-files -Source L:\ENROLLMENT\FILES -Destination E: -Activity "Copying files from 'FILES'..."
-copy-item -Path L:\ENROLLMENT\FILES\Drivers -Recurse -Destination P: -Force -ErrorAction SilentlyContinue
+copy-files -Source $env:ProgramFiles\enrollment\PE -Destination P: -Activity "Copying files from 'PE'..."
+copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
 
 Write-Output "`n Items have been copied."
 Write-Output ""
