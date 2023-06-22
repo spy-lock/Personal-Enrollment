@@ -47,4 +47,5 @@ Function Add-Profile {
     [int]$Version = Get-Content "C:\windows\system32\windowspowershell\v1.0\ProfileVersion.txt" -Force
     $version++
     Set-Content "C:\windows\system32\windowspowershell\v1.0\ProfileVersion.txt" -Value $Version -Force
+    Read-Host -Prompt "press enter to exit"
 }
