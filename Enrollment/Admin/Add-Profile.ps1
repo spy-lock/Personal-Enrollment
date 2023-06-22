@@ -38,6 +38,12 @@ Function Add-Profile {
     Copy-Item  $thescript.value -Destination "C:\windows\system32\windowspowershell\v1.0" -Force
     Get-Item "C:\windows\system32\windowspowershell\v1.0\profile.ps1" | Select-Object -Property LastWriteTime, name
 
+    $profileversionEX = Test-Path "C:\Windows\System32\WindowsPowerShell\v1.0\ProfileVersion.txt" -ErrorAction SilentlyContinue
+
+    IF($profileversionEX -like "false") {
+        new-item -ItemType File -Path "C:\Windows\System32\WindowsPowerShell\v1.0" -Name profileversion.txt -ErrorAction SilentlyContinue -Force
+    }
+
     [int]$Version = Get-Content "C:\windows\system32\windowspowershell\v1.0\ProfileVersion.txt" -Force
     $version++
     Set-Content "C:\windows\system32\windowspowershell\v1.0\ProfileVersion.txt" -Value $Version -Force
