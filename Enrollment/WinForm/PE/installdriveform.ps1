@@ -242,7 +242,7 @@ $button_DriveSelection3.add_click({
 	$BackButton_DriveSelection2.Visible = $true
 	$Label_WindowsSelection1.Visible = $true
 	$Button_WindowsOption1.Visible = $true
-	$Button_WindowsOption2.Visible = $true
+	$Button_WindowsOption2.Visible = $false
 	$Label_DriveSelection2.Visible = $false
 	$Label_DriveSelection3.Visible = $false
 	$button_DriveSelection3.Visible = $false
@@ -278,7 +278,7 @@ $BackButton_DriveSelection2.add_click({
 	$Button_WindowsOption1.add_click({
 	# This block makes some UI elements visible when the button is clicked
 	$button_back1.Visible = $true
-	$Button_WindowsOption3.Visible = $true
+	$Button_WindowsOption3.Visible = $false
 	$Button_WindowsOption4.Visible = $true
 	$Label_WindowsSelection2.Visible = $true
 	
@@ -294,7 +294,7 @@ $BackButton_DriveSelection2.add_click({
 })
 
 #This block adds a click event handler to the button named $Button_WindowsOption2
-$Button_WindowsOption2.add_click({
+<#$Button_WindowsOption2.add_click({
 	# This block makes some UI elements visible when the button is clicked
 	$button_back1.Visible = $true
 	$Button_WindowsOption3.Visible = $true
@@ -311,9 +311,9 @@ $Button_WindowsOption2.add_click({
 	$env:windowschoice = 10
 	Write-Verbose -Message "Windows $env:windowschoice chosen" -Verbose
 })
-
+#>
 #This block adds a click event handler to the button named $Button_WindowsOption3
-$Button_WindowsOption3.add_click({
+<#$Button_WindowsOption3.add_click({
 	# This block makes some UI elements visible when the button is clicked
 	$Button_WindowsOption5.Visible = $true
 	$Label_WindowsSelection3.Visible = $true
@@ -330,7 +330,7 @@ $Button_WindowsOption3.add_click({
 	$env:languagechoice = "NL-nl"
 	Write-Verbose -Message "language $env:languagechoice chosen" -Verbose
 })
-
+#>
 #This block adds a click event handler to the button named $Button_WindowsOption4
 $Button_WindowsOption4.add_click({
 	# This block makes some UI elements visible when the button is clicked
@@ -360,7 +360,7 @@ $Button_WindowsOption5.add_click({
 $button_back1.add_click({
 	# This block makes some UI elements visible when the button is clicked
 	$Button_WindowsOption1.Visible = $true
-	$Button_WindowsOption2.Visible = $true
+	$Button_WindowsOption2.Visible = $false
 	$Label_WindowsSelection1.Visible = $true
 	$BackButton_DriveSelection2.Visible = $true
 	
@@ -374,7 +374,7 @@ $button_back1.add_click({
 #This block adds a click event handler to the button named $button_back2
 $button_back2.add_click({
 	# This block makes some UI elements visible when the button is clicked
-	$Button_WindowsOption3.Visible = $true
+	$Button_WindowsOption3.Visible = $false
 	$Button_WindowsOption4.Visible = $true
 	$Label_WindowsSelection2.Visible = $true
 	$button_back1.Visible = $true
