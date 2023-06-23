@@ -215,23 +215,8 @@ Write-Output "`n Drive $DiskNumber will be used for installation."
 Write-Output ""
 Start-Sleep -Seconds 2
 
-DO
-{
-    $adk = Get-WmiObject -Class Win32_product | select -Property name | where -Property name -like "Windows Deployment Tools Environment"
-
-    IF(!$adk) {
-        winget install --id Microsoft.WindowsADK --force --accept-package-agreements --accept-source-agreements -h
-        winget install --id Microsoft.ADKPEAddon --force --accept-package-agreements --accept-source-agreements -h
-    }
-
-    ELSE
-    {
-        Write-Output "`n ADK has been found."
-        Write-Output ""
-        Start-Sleep -Seconds 2
-    }
-}
-UNTIL($adk)
+winget install --id Microsoft.WindowsADK --force --accept-package-agreements --accept-source-agreements -h
+winget install --id Microsoft.ADKPEAddon --force --accept-package-agreements --accept-source-agreements -h
 
 Write-Output "`n Initializing disks..."
 Write-Output ""

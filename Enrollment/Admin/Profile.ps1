@@ -32,7 +32,6 @@ Function Set-WinImage {
     Remove-Item $env:ProgramFiles\enrollment\mount\WIN11_en -Force -Recurse -erroraction SilentlyContinue
 }
 
-Function New-WinImageDrive {
      # Self-elevate the script if required
     if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
      if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
@@ -250,23 +249,8 @@ Write-Output "`n Drive $DiskNumber will be used for installation."
 Write-Output ""
 Start-Sleep -Seconds 2
 
-DO
-{
-    $adk = Get-WmiObject -Class Win32_product | select -Property name | where -Property name -like "Windows Deployment Tools Environment"
-
-    IF(!$adk) {
-        winget install --id Microsoft.WindowsADK --force --accept-package-agreements --accept-source-agreements -h
-        winget install --id Microsoft.ADKPEAddon --force --accept-package-agreements --accept-source-agreements -h
-    }
-
-    ELSE
-    {
-        Write-Output "`n ADK has been found."
-        Write-Output ""
-        Start-Sleep -Seconds 2
-    }
-}
-UNTIL($adk)
+winget install --id Microsoft.WindowsADK --force --accept-package-agreements --accept-source-agreements -h
+winget install --id Microsoft.ADKPEAddon --force --accept-package-agreements --accept-source-agreements -h
 
 Write-Output "`n Initializing disks..."
 Write-Output ""
@@ -359,7 +343,6 @@ chkdsk $peDriveL /f /x /r
 
 Write-Output "`n Script is done."
 Read-Host -Prompt "Press enter to exit (ENTER)"
-}
 
 Function Start-Deployment {
     DO {
