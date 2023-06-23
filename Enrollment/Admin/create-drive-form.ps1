@@ -259,7 +259,27 @@ write-output "`n Getting files to copy, this may take a while..."
 write-output ""
 start-sleep -seconds 2
 
-copy-files -Source $env:ProgramFiles\enrollment\PE -Destination P: -Activity "Copying files from 'PE'..."
+Dism /Mount-Image /ImageFile:"C:\program files\enrollment\recources\PE\media\sources\boot.wim" /Index:1 /MountDir:"C:\program files\enrollment\Recources\PE\mount"
+
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-WMI.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-WMI_en-us.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-NetFX.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-NetFX_en-us.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-Scripting.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-Scripting_en-us.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-PowerShell.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-PowerShell_en-us.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-StorageWMI.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-StorageWMI_en-us.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-DismCmdlets.cab"
+Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-DismCmdlets_en-us.cab"
+
+Dism /Unmount-Image /MountDir:C:\WinPE_amd64_PS\mount /Commit
+
+dism /Apply-Image /ImageFile:"C:\program files\enrollment\recources\PE\media\sources\boot.wim" /Index:1 /ApplyDir:P:\
+
+Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
+
 copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
 
 Write-Output "`n Items have been copied."
@@ -269,8 +289,6 @@ Start-Sleep -Seconds 2
 Write-Output "`n Adding boot files..."
 Write-Output ""
 Start-Sleep -Seconds 2
-
-Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
 
 $drives = "D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
 FOREACH ($drive in $drives) {
