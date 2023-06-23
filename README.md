@@ -53,11 +53,11 @@ The project benefits include:
 
 
 ## Instructions
-Download Enrollment als .zip.
-Creeer een folder op C:/ genaamd files.
-Zet "Admin, Drivers, Scripts, WinForm" in C:/files.
-Onder C:/files/scripts staat een bestand genaamd "Click Me.bat", rechter muisklik en selecteer run as admin.
+1. Download Enrollment als .zip.
+2. Creeer een folder op C:/ genaamd files.
+3. Zet "Admin, Drivers, Scripts, WinForm" in C:/files.
+4. Onder C:/files/scripts staat een bestand genaamd "Click Me.bat", rechter muisklik en selecteer run as admin.
 
-Het process zal meerdere keren opnieuw opstarten. na elke keer opnieuw opstarten todat C:/files niet meer bestaat.
+5. Het process zal meerdere keren opnieuw opstarten. na elke keer opnieuw opstarten todat C:/files niet meer bestaat.
 
 
