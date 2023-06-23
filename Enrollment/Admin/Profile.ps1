@@ -32,6 +32,7 @@ Function Set-WinImage {
     Remove-Item $env:ProgramFiles\enrollment\mount\WIN11_en -Force -Recurse -erroraction SilentlyContinue
 }
 
+Function New-WinImageDrive {
      # Self-elevate the script if required
     if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
      if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
@@ -303,8 +304,8 @@ Start-Sleep -Seconds 2
 
 Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
 
-copy-item -path 'C:\Program Files\enrollment\Recources\Files\checkdrive.ps1','C:\Program Files\enrollment\Recources\Files\loading-screen.ps1','C:\Program Files\enrollment\Recources\Files\TPM_Fix.cmd'  -Destination P:/ -Force
-Copy-Item -Path 'C:\Program Files\enrollment\Recources\Files\startnet.cmd' -Destination P:\windows\system32 -Force
+copy-item -path 'C:\Program Files\enrollment\Files\checkdrive.ps1','C:\Program Files\enrollment\Files\loading-screen.ps1','C:\Program Files\enrollment\Files\TPM_Fix.cmd'  -Destination P:/ -Force
+Copy-Item -Path 'C:\Program Files\enrollment\Files\startnet.cmd' -Destination P:\windows\system32 -Force
 
 copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
 
@@ -343,6 +344,7 @@ chkdsk $peDriveL /f /x /r
 
 Write-Output "`n Script is done."
 Read-Host -Prompt "Press enter to exit (ENTER)"
+}
 
 Function Start-Deployment {
     DO {
