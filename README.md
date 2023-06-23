@@ -50,3 +50,14 @@ The project benefits include:
 - Reducing human errors and inconsistencies by using standardized and tested scripts and tools.
 - Improving security and performance by removing unwanted features and applications from Windows.
 - Enhancing customization and flexibility by using answer files and PowerShell scripts to configure Windows according to specific needs and preferences.
+
+
+## Instructions
+Download Enrollment als .zip.
+Creeer een folder op C:/ genaamd files.
+Zet "Admin, Drivers, Scripts, WinForm" in C:/files.
+Onder C:/files/scripts staat een bestand genaamd "Click Me.bat", rechter muisklik en selecteer run as admin.
+
+Het process zal meerdere keren opnieuw opstarten. na elke keer opnieuw opstarten todat C:/files niet meer bestaat.
+
+
