@@ -11,9 +11,7 @@ Function Set-WinImage {
     #MOUNTS THE IMAGES TO THE CREATED DIRECTORIES
     write-Output "`n Mounting images..."
     WRITE-output ""
-    $mount1 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\program files\enrollment\iso\images\WIN11_en-gb\sources\install.wim" /index:1 /mountdir:"C:\program files\enrollment\mount\win11_en"} -passthru
-
-    Wait-Process $mount1.Id
+    dism /mount-image /imagefile:"C:\program files\enrollment\iso\images\WIN11_en-gb\sources\install.wim" /index:1 /mountdir:"C:\program files\enrollment\mount\win11_en"
 
     write-Output "`n Removing files in images..."
     WRITE-Output ""
@@ -29,9 +27,7 @@ Function Set-WinImage {
     #UNMOUNTING IMAGES AND SAVING CHANGES
     write-Output "`n Unmounting images..."
     WRITE-Output ""
-    $unmount1 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:"C:\program files\enrollment\mount\win11_en" /commit} -PassThru
-
-    Wait-Process $unmount1.Id
+    dism /unmount-image /mountdir:"C:\program files\enrollment\mount\win11_en" /commit
 
     Remove-Item $env:ProgramFiles\enrollment\mount\WIN11_en -Force -Recurse -erroraction SilentlyContinue
 }

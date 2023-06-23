@@ -11,9 +11,7 @@ Function Set-WinImage {
     #MOUNTS THE IMAGES TO THE CREATED DIRECTORIES
     write-Output "`n Mounting images..."
     WRITE-output ""
-    $mount1 = Start-Process powershell -ArgumentList {dism /mount-image /imagefile:"C:\program files\enrollment\iso\images\WIN11_en-gb\sources\install.wim" /index:1 /mountdir:"C:\program files\enrollment\mount\win11_en"} -passthru
-
-    Wait-Process $mount1.Id
+    dism /mount-image /imagefile:"C:\program files\enrollment\iso\images\WIN11_en-gb\sources\install.wim" /index:1 /mountdir:"C:\program files\enrollment\mount\win11_en"
 
     write-Output "`n Removing files in images..."
     WRITE-Output ""
@@ -29,12 +27,11 @@ Function Set-WinImage {
     #UNMOUNTING IMAGES AND SAVING CHANGES
     write-Output "`n Unmounting images..."
     WRITE-Output ""
-    $unmount1 = Start-Process powershell -ArgumentList {dism /unmount-image /mountdir:"C:\program files\enrollment\mount\win11_en" /commit} -PassThru
-
-    Wait-Process $unmount1.Id
+    dism /unmount-image /mountdir:"C:\program files\enrollment\mount\win11_en" /commit
 
     Remove-Item $env:ProgramFiles\enrollment\mount\WIN11_en -Force -Recurse -erroraction SilentlyContinue
 }
+
 Function New-WinImageDrive {
      # Self-elevate the script if required
     if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -400,17 +397,15 @@ Function Start-Deployment {
         $Mount = New-Object System.Management.Automation.Host.ChoiceDescription "&Mount","Images will be mounted and updates with items in C:/iso/files."
         $Create = New-Object System.Management.Automation.Host.ChoiceDescription "&Create","Installation media will be created."
         $ReplaceDrive = New-Object System.Management.Automation.Host.ChoiceDescription "Replace&Drive","Replaces the images on the external drive."
-        $ReplaceNas = New-Object System.Management.Automation.Host.ChoiceDescription "Replace&Nas","Replaces the iamges on the NAS."
         $exit = New-Object System.Management.Automation.Host.ChoiceDescription "E&xit","Will close the menu."
 
-        $options = [System.Management.Automation.Host.ChoiceDescription[]]($Mount, $Create, $ReplaceDrive, $ReplaceNas, $exit)
+        $options = [System.Management.Automation.Host.ChoiceDescription[]]($Mount, $Create, $ReplaceDrive, $exit)
 
         $result = $host.ui.PromptForChoice($title, $message, $options, 0) 
 
         $mountCode = 0
         $createCode = 0
         $ReplaceDriveCode = 0
-        $ReplaceNasCode = 0
         $exitCode = 0
 
         switch ($result)
@@ -418,7 +413,6 @@ Function Start-Deployment {
                 0 {"Running mount process..." ; $mountCode = 1}
                 1 {"Running Creation process..." ; $createCode = 1}
                 2 {"Running replacement process..." ; $ReplaceDriveCode = 1}
-                3 {"Running replacement process..." ; $ReplaceNasCode = 1}
                 4 {"Exiting..." ; $exitCode = 1}
             }
 
@@ -437,9 +431,6 @@ Function Start-Deployment {
         }
 
 
-        IF($ReplaceNasCode -eq 1){
-            Set-NasImage
-        }
     }
     UNTIL($exitCode -eq 1)
 
