@@ -217,9 +217,9 @@ Start-Sleep -Seconds 2
 
 DO
 {
-    $adk = Test-Path "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\"
+    $adk = Get-WmiObject -Class Win32_product | select -Property name | where -Property name -like "Windows Deployment Tools Environment"
 
-    IF($adk -like "false") {
+    IF(!$adk) {
         winget install --id Microsoft.WindowsADK --force --accept-package-agreements --accept-source-agreements -h
         winget install --id Microsoft.ADKPEAddon --force --accept-package-agreements --accept-source-agreements -h
     }
@@ -231,7 +231,7 @@ DO
         Start-Sleep -Seconds 2
     }
 }
-UNTIL($adk -like "true")
+UNTIL($adk)
 
 Write-Output "`n Initializing disks..."
 Write-Output ""
@@ -284,8 +284,8 @@ Start-Sleep -Seconds 2
 
 Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
 
-copy-item -path 'C:\Program Files\enrollment\Files\checkdrive.ps1','C:\Program Files\enrollment\Files\loading-screen.ps1','C:\Program Files\enrollment\Files\TPM_Fix.cmd'  -Destination P:/ -Force
-Copy-Item -Path 'C:\Program Files\enrollment\Files\startnet.cmd' -Destination P:\windows\system32 -Force
+copy-item -path 'C:\Program Files\enrollment\Recources\Files\checkdrive.ps1','C:\Program Files\enrollment\Recources\Files\loading-screen.ps1','C:\Program Files\enrollment\Recources\Files\TPM_Fix.cmd'  -Destination P:/ -Force
+Copy-Item -Path 'C:\Program Files\enrollment\Recources\Files\startnet.cmd' -Destination P:\windows\system32 -Force
 
 copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
 

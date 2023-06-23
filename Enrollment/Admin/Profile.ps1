@@ -252,9 +252,9 @@ Start-Sleep -Seconds 2
 
 DO
 {
-    $adk = Test-Path "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\"
+    $adk = Get-WmiObject -Class Win32_product | select -Property name | where -Property name -like "Windows Deployment Tools Environment"
 
-    IF($adk -like "false") {
+    IF(!$adk) {
         winget install --id Microsoft.WindowsADK --force --accept-package-agreements --accept-source-agreements -h
         winget install --id Microsoft.ADKPEAddon --force --accept-package-agreements --accept-source-agreements -h
     }
@@ -266,7 +266,7 @@ DO
         Start-Sleep -Seconds 2
     }
 }
-UNTIL($adk -like "true")
+UNTIL($adk)
 
 Write-Output "`n Initializing disks..."
 Write-Output ""
