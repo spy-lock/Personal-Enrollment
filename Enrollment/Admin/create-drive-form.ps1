@@ -274,19 +274,22 @@ Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /Packa
 Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-DismCmdlets.cab"
 Dism /Add-Package /Image:"C:\program files\enrollment\Recources\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-DismCmdlets_en-us.cab"
 
-Dism /Unmount-Image /MountDir:C:\WinPE_amd64_PS\mount /Commit
+Dism /Unmount-Image /MountDir:"C:\program files\enrollment\Recources\PE\mount" /Commit
 
 dism /Apply-Image /ImageFile:"C:\program files\enrollment\recources\PE\media\sources\boot.wim" /Index:1 /ApplyDir:P:\
 
+Write-Output "`n Adding boot files..."
+Write-Output ""
+Start-Sleep -Seconds 2
+
 Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
+
+copy-item -path 'C:\Program Files\enrollment\Recources\Files\checkdrive.ps1','C:\Program Files\enrollment\Recources\Files\loading-screen.ps1','C:\Program Files\enrollment\Recources\Files\TPM_Fix.cmd'  -Destination P:/ -Force
+Copy-Item -Path 'C:\Program Files\enrollment\Recources\Files\startnet.cmd' -Destination P:\windows\system32 -Force
 
 copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
 
 Write-Output "`n Items have been copied."
-Write-Output ""
-Start-Sleep -Seconds 2
-
-Write-Output "`n Adding boot files..."
 Write-Output ""
 Start-Sleep -Seconds 2
 
