@@ -297,7 +297,7 @@ write-output "`n Getting files to copy, this may take a while..."
 write-output ""
 start-sleep -seconds 2
 
-Dism /Mount-Image /ImageFile:"C:\program files\enrollment\PE\media\sources\boot.wim" /Index:1 /MountDir:"C:\program files\enrollment\Recources\PE\mount"
+Dism /Mount-Image /ImageFile:"C:\program files\enrollment\PE\media\sources\boot.wim" /Index:1 /MountDir:"C:\program files\enrollment\PE\mount"
 
 Dism /Add-Package /Image:"C:\program files\enrollment\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-WMI.cab"
 Dism /Add-Package /Image:"C:\program files\enrollment\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-WMI_en-us.cab"
@@ -361,8 +361,8 @@ chkdsk $peDriveL /f /x /r
 
 
 Write-Output "`n Script is done."
-Read-Host -Prompt "Press enter to exit (ENTER)"}
-
+Read-Host -Prompt "Press enter to exit (ENTER)"
+}
 
 Function Start-Deployment {
     DO {
