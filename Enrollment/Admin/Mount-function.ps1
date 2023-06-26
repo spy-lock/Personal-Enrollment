@@ -16,7 +16,7 @@ Function Set-WinImage {
     write-Output "`n Removing files in images..."
     WRITE-Output ""
 
-    Remove-Item C:\programfiles\enrollment\mount\win11_en\files -Force -Recurse
+    Remove-Item $env:ProgramFiles\enrollment\mount\win11_en\files -Force -Recurse
 
     #COPYING FILES INSIDE THE MOUNTED IMAGES
     write-host "`n Copying items now..."
