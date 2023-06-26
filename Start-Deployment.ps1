@@ -4,10 +4,6 @@ Start-Sleep -Seconds 2
 New-Item -Type Directory -Path C:/ -Name files -Force -ErrorAction SilentlyContinue | Out-Null
 copy-item ./enrollment/drivers, ./enrollment/scripts, ./enrollment/winform -Destination C:/files -Recurse -ErrorAction SilentlyContinue -Force | Out-Null
 
-Write-Output "Items coppied."
-Write-Output ""
-Start-Sleep -Seconds 1
-
 #  checks if the current user is an administrator and if not, it elevates the privileges by running the script again with the Runas verb
 IF (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
     #  checks if the operating system build number is greater than or equal to 6000
@@ -24,7 +20,7 @@ IF (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 Write-Output "Creating run key..."
 Write-Output ""
 Start-Sleep -Seconds 1
-Set-ItemProperty Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name Scriptrun -Value {"C:/files/scripts/click me.bat"} -Force 
+Set-ItemProperty Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name Scriptrun -Value {cmd /k "C:\files\Scripts\CLICK ME.bat" -verb runas} -Force 
 Unblock-File 'C:/files/scripts/click me.bat'
 
 Write-Output "Key created."
