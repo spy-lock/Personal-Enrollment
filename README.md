@@ -53,7 +53,7 @@ The project benefits include:
 
 
 ## Instructions
-1. Download the project using "Code ===> Download as ZIP".
+1. Download the project using "Code ===> Download as ZIP". Or installing the release.
 2. extract the content to any location.
 3. Run "Start-Deployment" with powershell. (Right click the file and select "Run with powershell")
 4. After restarting the device the project will start.
