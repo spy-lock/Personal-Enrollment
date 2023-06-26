@@ -17,15 +17,6 @@ Start-Sleep -Seconds 2
 # Remove any files or folders that start with C:\Windows\temp\
 Remove-Item C:\Windows\temp\* -Recurse -Force -ErrorAction SilentlyContinue
 
-# Remove any files or folders that start with C:\Users\Agiliq\AppData\Local\Temp\
-Remove-Item C:\Users\Agiliq\AppData\Local\Temp\* -Recurse -Force -ErrorAction SilentlyContinue
-
-# Remove any files or folders that start with C:\Users\Agiliq\AppData\LocalLow\Temp\
-Remove-Item C:\Users\Agiliq\AppData\LocalLow\Temp\* -Recurse -Force -ErrorAction SilentlyContinue
-
-# Remove any files or folders that start with C:\Users\Agiliq\AppData\Roaming\Temp\
-Remove-Item C:\Users\Agiliq\AppData\Roaming\Temp\* -Recurse -Force -ErrorAction SilentlyContinue
-
 # Remove any files or folders that start with C:\Users\Administrator\AppData\Local\Temp\
 Remove-Item C:\Users\Administrator\AppData\Local\Temp\* -Recurse -Force -ErrorAction SilentlyContinue
 
@@ -40,8 +31,6 @@ Write-Output "`n Starting file deletion..."
 
 # Remove the files folder from C:\
 Remove-Item -Path C:/files -Force -ErrorAction SilentlyContinue -Recurse
-
-Get-LocalUser -Name agiliq | Set-LocalUser -AccountNeverExpires -PasswordNeverExpires $true
 
 # Wait for the user to press enter before exiting
 Read-Host -Prompt "Press enter to exit"
