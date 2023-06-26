@@ -307,7 +307,8 @@ Start-Sleep -Seconds 2
 Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
 
 copy-item -path 'C:\Program Files\enrollment\Files\checkdrive.ps1','C:\Program Files\enrollment\Files\loading-screen.ps1','C:\Program Files\enrollment\Files\TPM_Fix.cmd'  -Destination P:/ -Force
-Copy-Item -Path 'C:\Program Files\enrollment\Files\startnet.cmd' -Destination P:\windows\system32 -Force
+Copy-Item -Path 'C:\Program Files\enrollment\Files\startnet.cmd' -Destination P:\windows\system32 -Force -ErrorAction SilentlyContinue
+Copy-Item -Path 'C:\Program Files\enrollment\Files\WinForm' -Destination -Recurse P:\windows -Force -ErrorAction SilentlyContinue
 
 copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
 
