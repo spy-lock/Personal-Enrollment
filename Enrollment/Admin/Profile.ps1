@@ -30,6 +30,8 @@ Function Set-WinImage {
     dism /unmount-image /mountdir:"C:\program files\enrollment\mount\win11_en" /commit
 
     Remove-Item $env:ProgramFiles\enrollment\mount\WIN11_en -Force -Recurse -erroraction SilentlyContinue
+
+    Read-Host -Prompt "press (ENTER) to exit"
 }
 
 Function New-WinImageDrive {
