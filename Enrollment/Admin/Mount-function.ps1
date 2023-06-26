@@ -20,7 +20,7 @@ Function Set-WinImage {
 
     #COPYING FILES INSIDE THE MOUNTED IMAGES
     write-host "`n Copying items now..."
-    copy-files -Source $env:ProgramFiles\enrollment\files -Destination C:\programfiles\enrollment\mount\win11_en\files -Activity "Copying 'WIN11_en\files'..."  -Verbose
+    copy-files -Source $env:ProgramFiles\enrollment\files -Destination $env:ProgramFiles\enrollment\mount\win11_en\files -Activity "Copying 'WIN11_en\files'..."  -Verbose
     WRITE-Output ""
 
 

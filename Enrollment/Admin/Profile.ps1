@@ -16,11 +16,11 @@ Function Set-WinImage {
     write-Output "`n Removing files in images..."
     WRITE-Output ""
 
-    Remove-Item C:\programfiles\enrollment\mount\win11_en\files -Force -Recurse
+    Remove-Item $env:ProgramFiles\enrollment\mount\win11_en\files -Force -Recurse
 
     #COPYING FILES INSIDE THE MOUNTED IMAGES
     write-host "`n Copying items now..."
-    copy-files -Source $env:ProgramFiles\enrollment\files -Destination C:\programfiles\enrollment\mount\win11_en\files -Activity "Copying 'WIN11_en\files'..."  -Verbose
+    copy-files -Source $env:ProgramFiles\enrollment\files -Destination $env:ProgramFiles\enrollment\mount\win11_en\files -Activity "Copying 'WIN11_en\files'..."  -Verbose
     WRITE-Output ""
 
 
@@ -398,7 +398,7 @@ Function Start-Deployment {
                 0 {"Running mount process..." ; $mountCode = 1}
                 1 {"Running Creation process..." ; $createCode = 1}
                 2 {"Running replacement process..." ; $ReplaceDriveCode = 1}
-                4 {"Exiting..." ; $exitCode = 1}
+                3 {"Exiting..." ; $exitCode = 1}
             }
 
         IF($mountCode -eq 1) {
@@ -422,9 +422,7 @@ Function Start-Deployment {
     Clear-Host
     Write-Output "`n Have a nice day!"
     Start-Sleep -Seconds 2
-
 }
-
 Function Set-DriveImage {
     #\\-Puts all possible drives in a variable.-//#
     $drives = "D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
