@@ -55,7 +55,7 @@ The project benefits include:
 ## Instructions
 1. Download the project using "Code ===> Download as ZIP". Or installing the release.
 2. extract the content to any location.
-3. Run "Start-Deployment" with powershell. (Right click the file and select "Run with powershell")
+3. Run "Script-exe.bat" with powershell. (just dubble click DONT RUN AS ADMINISTRATOR")
 4. After restarting the device the project will start.
 5. The project may restart some times, keep logging in until it ask for "Press enter to exit".
 
