@@ -53,11 +53,10 @@ The project benefits include:
 
 
 ## Instructions
-1. Download Enrollment als .zip.
-2. Creeer een folder op C:/ genaamd files.
-3. Zet "Admin, Drivers, Scripts, WinForm" in C:/files.
-4. Onder C:/files/scripts staat een bestand genaamd "Click Me.bat", rechter muisklik en selecteer run as admin.
-
-5. Het process zal meerdere keren opnieuw opstarten. na elke keer opnieuw opstarten todat C:/files niet meer bestaat.
+1. Download the project using "Code ===> Download as ZIP".
+2. extract the content to any location.
+3. Run "Start-Deployment" with powershell. (Right click the file and select "Run with powershell")
+4. After restarting the device the project will start.
+5. The project may restart some times, keep logging in until it ask for "Press enter to exit".
 
 
