@@ -50,7 +50,7 @@
                 0 {"Running mount process..." ; $mountCode = 1}
                 1 {"Running Creation process..." ; $createCode = 1}
                 2 {"Running replacement process..." ; $ReplaceDriveCode = 1}
-                4 {"Exiting..." ; $exitCode = 1}
+                3 {"Exiting..." ; $exitCode = 1}
             }
 
         IF($mountCode -eq 1) {
