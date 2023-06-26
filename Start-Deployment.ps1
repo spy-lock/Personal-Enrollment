@@ -11,7 +11,7 @@ Start-Sleep -Seconds 1
 Write-Output "Creating run key..."
 Write-Output ""
 Start-Sleep -Seconds 1
-start-process powershell.exe -verb runas -wait -argumentlist {Set-ItemProperty Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name Scriptrun -Value "C:/files/scripts/click me.bat" -Force -ErrorAction SilentlyContinue}
+start-process powershell.exe -verb runas -wait -argumentlist {Set-ItemProperty Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name Scriptrun -Value {"C:/files/scripts/click me.bat"} -Force -ErrorAction SilentlyContinue}
 
 Write-Output "Key created."
 Write-Output ""
