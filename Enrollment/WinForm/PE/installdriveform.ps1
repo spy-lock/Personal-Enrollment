@@ -147,7 +147,7 @@ $Button_WindowsOption1 = New-Object System.Windows.Forms.Button
 $Button_WindowsOption1.Location = New-Object System.Drawing.Point(90,60)
 $Button_WindowsOption1.Size = New-Object System.Drawing.Size(240,34)
 $Button_WindowsOption1.TextAlign = "MiddleCenter"
-$Button_WindowsOption1.Text = "Windows 11"
+$Button_WindowsOption1.Text = "Windows 11 home"
 $Button_WindowsOption1.Anchor = [System.Windows.Forms.AnchorStyles]::Top
 
 #Create a button for selecting Windows 10
@@ -155,7 +155,7 @@ $Button_WindowsOption2 = New-Object System.Windows.Forms.Button
 $Button_WindowsOption2.Location = New-Object System.Drawing.Point(90,100)
 $Button_WindowsOption2.Size = New-Object System.Drawing.Size(240,34)
 $Button_WindowsOption2.TextAlign = "MiddleCenter"
-$Button_WindowsOption2.Text = "Windows 10"
+$Button_WindowsOption2.Text = "Windows 11 pro"
 $Button_WindowsOption2.Anchor = [System.Windows.Forms.AnchorStyles]::Top
 
 #Creates a button for NL language option
@@ -242,7 +242,7 @@ $button_DriveSelection3.add_click({
 	$BackButton_DriveSelection2.Visible = $true
 	$Label_WindowsSelection1.Visible = $true
 	$Button_WindowsOption1.Visible = $true
-	$Button_WindowsOption2.Visible = $false
+	$Button_WindowsOption2.Visible = $true
 	$Label_DriveSelection2.Visible = $false
 	$Label_DriveSelection3.Visible = $false
 	$button_DriveSelection3.Visible = $false
@@ -289,15 +289,15 @@ $BackButton_DriveSelection2.add_click({
 	$BackButton_DriveSelection2.Visible = $false
 	
 	# This block sets the environment variable windowschoice to 11 and writes a verbose message
-	$env:windowschoice = 11
+	$env:windowschoice = "11 HOME"
 	Write-Verbose -Message "Windows $env:windowschoice chosen" -Verbose
 })
 
 #This block adds a click event handler to the button named $Button_WindowsOption2
-<#$Button_WindowsOption2.add_click({
+$Button_WindowsOption2.add_click({
 	# This block makes some UI elements visible when the button is clicked
 	$button_back1.Visible = $true
-	$Button_WindowsOption3.Visible = $true
+	$Button_WindowsOption3.Visible = $false
 	$Button_WindowsOption4.Visible = $true
 	$Label_WindowsSelection2.Visible = $true
 	
@@ -308,10 +308,10 @@ $BackButton_DriveSelection2.add_click({
 	$BackButton_DriveSelection2.Visible = $false
 	
 	# This block sets the environment variable windowschoice to 10 and writes a verbose message
-	$env:windowschoice = 10
+	$env:windowschoice = "11 PRO"
 	Write-Verbose -Message "Windows $env:windowschoice chosen" -Verbose
 })
-#>
+
 #This block adds a click event handler to the button named $Button_WindowsOption3
 <#$Button_WindowsOption3.add_click({
 	# This block makes some UI elements visible when the button is clicked
@@ -360,7 +360,7 @@ $Button_WindowsOption5.add_click({
 $button_back1.add_click({
 	# This block makes some UI elements visible when the button is clicked
 	$Button_WindowsOption1.Visible = $true
-	$Button_WindowsOption2.Visible = $false
+	$Button_WindowsOption2.Visible = $true
 	$Label_WindowsSelection1.Visible = $true
 	$BackButton_DriveSelection2.Visible = $true
 	
