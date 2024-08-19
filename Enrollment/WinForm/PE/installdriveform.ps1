@@ -289,7 +289,7 @@ $BackButton_DriveSelection2.add_click({
 	$BackButton_DriveSelection2.Visible = $false
 	
 	# This block sets the environment variable windowschoice to 11 and writes a verbose message
-	$env:windowschoice = "11 HOME"
+	$env:windowschoice = "11-HOME"
 	Write-Verbose -Message "Windows $env:windowschoice chosen" -Verbose
 })
 
@@ -308,7 +308,7 @@ $Button_WindowsOption2.add_click({
 	$BackButton_DriveSelection2.Visible = $false
 	
 	# This block sets the environment variable windowschoice to 10 and writes a verbose message
-	$env:windowschoice = "11 PRO"
+	$env:windowschoice = "11-PRO"
 	Write-Verbose -Message "Windows $env:windowschoice chosen" -Verbose
 })
 
