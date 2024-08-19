@@ -77,16 +77,16 @@ ELSE {
 }
 
 # Copy the autounattend.xml file from the images folder to the appropriate subfolder based on the language and disk choices, overwriting any existing file
-Copy-Item -Path "$imagepath\\autounattend\\$taalkeuze$disknumber\\autounattend.xml" -Destination "$imagepath\\win$windowschoice`_$taalkeuze" -Force
+Copy-Item -Path "$imagepath\\autounattend\\$taalkeuze$disknumber-$windowschoice\\autounattend.xml" -Destination "$imagepath\\win11`_$taalkeuze" -Force
 
 # Run a command to fix the TPM issue if it exists on any of the drives
 cmd /q /c "FOR %i IN (C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\TPM_Fix.cmd cmd /k %i:\TPM_Fix.cmd"
 
 # Define the path to the unattend file
-$unattendpath = "$imagepath\win$windowschoice`_$taalkeuze\autounattend.xml"
+$unattendpath = "$imagepath\win11`_$taalkeuze\autounattend.xml"
 
 # Start the setup.exe file with the unattend file as an argument
-Start-Process "$imagepath\win$windowschoice`_$taalkeuze\setup.exe" /unattend:$unattendpath
+Start-Process "$imagepath\win11`_$taalkeuze\setup.exe" /unattend:$unattendpath
 
 # Start another PowerShell process with a script to show a loading screen
 Start-Process powershell -WindowStyle Maximized -ArgumentList X:/loading-screen.ps1
