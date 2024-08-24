@@ -261,13 +261,11 @@ Dism /Add-Package /Image:"C:\program files\enrollment\PE\mount" /PackagePath:"C:
 
 Dism /Unmount-Image /MountDir:"C:\program files\enrollment\PE\mount" /Commit
 
-dism /Apply-Image /ImageFile:"C:\program files\enrollment\PE\media\sources\boot.wim" /Index:1 /ApplyDir:P:\
+Start-Process powershell -ArgumentList {makewinpemedia /UFD "C:\program files\enrollment\PE\mount" P:} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
 
-Write-Output "`n Adding boot files..."
+Write-Output "`n creating WinPE drive..."
 Write-Output ""
 Start-Sleep -Seconds 2
-
-Start-Process powershell -ArgumentList {bcdboot P:\Windows /s P: /f ALL} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
 
 copy-item -path 'C:\Program Files\enrollment\Files\checkdrive.ps1','C:\Program Files\enrollment\Files\loading-screen.ps1','C:\Program Files\enrollment\Files\TPM_Fix.cmd'  -Destination P:/ -Force
 Copy-Item -Path 'C:\Program Files\enrollment\Files\startnet.cmd' -Destination P:\windows\system32 -Force -ErrorAction SilentlyContinue
