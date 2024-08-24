@@ -224,17 +224,25 @@ Start-Sleep -Seconds 2
 
 $disknumber = Get-Content $env:windir\temp\drivechoice.txt
 
-Get-Disk | Where-Object -Property Number -eq $disknumber | Clear-Disk -RemoveData -Confirm:$false -Verbose
+$diskpartCommands = @"
+List disk
+select disk $disknumber
+clean
+convert MBR
+create partition primary size=2048
+active
+format fs=FAT32 quick label="WinPE"
+assign letter=P
+create partition primary
+format fs=NTFS quick label="Images"
+assign letter=E  
+Exit
+"@
 
-Set-Disk -PartitionStyle GPT -Number $disknumber -ErrorAction SilentlyContinue -Verbose
+$tempFile = [System.IO.Path]::GetTempFileName()
+Set-Content -Path $tempFile -Value $diskpartCommands
 
-Initialize-Disk -Number $disknumber -erroraction silentlycontinue -Verbose
-
-New-Partition -DiskNumber $disknumber -Size 10gb -DriveLetter P -Verbose
-New-Partition -DiskNumber $disknumber -UseMaximumSize -DriveLetter E -Verbose
-
-Format-Volume -DriveLetter p -FileSystem FAT32 -NewFileSystemLabel "Windows PE" -Verbose | out-null
-Format-Volume -DriveLetter E -FileSystem NTFS -NewFileSystemLabel "Images" -Verbose | out-null
+Start-Process -FilePath "diskpart.exe" -ArgumentList "/s $tempFile" -Wait
 
 Write-Output "`n Disk initialized."
 Write-Output ""
@@ -259,17 +267,18 @@ Dism /Add-Package /Image:"C:\program files\enrollment\PE\mount" /PackagePath:"C:
 Dism /Add-Package /Image:"C:\program files\enrollment\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-DismCmdlets.cab"
 Dism /Add-Package /Image:"C:\program files\enrollment\PE\mount" /PackagePath:"C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-DismCmdlets_en-us.cab"
 
+copy-item -path 'C:\Program Files\enrollment\Files\checkdrive.ps1','C:\Program Files\enrollment\Files\loading-screen.ps1','C:\Program Files\enrollment\Files\TPM_Fix.cmd'  -Destination "C:\program files\enrollment\PE\mount" -Force
+Copy-Item -Path 'C:\Program Files\enrollment\Files\startnet.cmd' -Destination "C:\program files\enrollment\PE\mount\windows\system32" -Force -ErrorAction SilentlyContinue
+Copy-Item -Path 'C:\Program Files\enrollment\Files\WinForm' -Destination "C:\program files\enrollment\PE\mount\windows" -Recurse -Force -ErrorAction SilentlyContinue
+
 Dism /Unmount-Image /MountDir:"C:\program files\enrollment\PE\mount" /Commit
 
-Start-Process powershell -ArgumentList {makewinpemedia /UFD "C:\program files\enrollment\PE\mount" P:} -WorkingDirectory "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools" -Wait
+copy-files -Source 'C:\Program Files\enrollment\PE\media' -Destination P: -Activity "Creating boot drive..."
 
 Write-Output "`n creating WinPE drive..."
 Write-Output ""
 Start-Sleep -Seconds 2
 
-copy-item -path 'C:\Program Files\enrollment\Files\checkdrive.ps1','C:\Program Files\enrollment\Files\loading-screen.ps1','C:\Program Files\enrollment\Files\TPM_Fix.cmd'  -Destination P:/ -Force
-Copy-Item -Path 'C:\Program Files\enrollment\Files\startnet.cmd' -Destination P:\windows\system32 -Force -ErrorAction SilentlyContinue
-Copy-Item -Path 'C:\Program Files\enrollment\Files\WinForm' -Destination P:\windows -Recurse -Force -ErrorAction SilentlyContinue
 
 copy-files -Source $env:ProgramFiles\enrollment\ISO -Destination E: -Activity "Copying files from 'FILES'..."
 
